@@ -92,7 +92,7 @@ export default class DOMChange {
   }
 
   addArrow() {
-    const arrow = this.direction ? '&#8659' : '&#8657';
+    const arrow = this.direction ? '  &#9660' : '  &#9650';
     return arrow;
   }
 
