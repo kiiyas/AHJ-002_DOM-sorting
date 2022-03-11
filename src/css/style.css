@@ -36,6 +36,7 @@ body {
 	border-bottom: 3px solid #fff;
 	font-size: 15px;
 }
-.table tr:nth-child(odd){
-	background: #f0eacb!important;
-} 
+
+.table tr {
+	border-bottom: 2px solid rgb(218, 213, 191);	
+}
