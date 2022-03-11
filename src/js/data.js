@@ -32,43 +32,5 @@ const emulated = [
 ];
 
 // dataHandling emulator
-function createDataArray(emul) {
-  let generatedArray;
-  if (emul) {
-    generatedArray = [
-      {
-        id: 26,
-        title: 'Побег из Шоушенка',
-        imdb: `imdb: ${(9.30).toFixed(2)}`,
-        year: `(${1994})`,
-      },
-      {
-        id: 25,
-        title: 'Крёстный отец',
-        imdb: `imdb: ${(9.20).toFixed(2)}`,
-        year: `(${1972})`,
-      },
-      {
-        id: 27,
-        title: 'Крёстный отец 2',
-        imdb: `imdb: ${(9.00).toFixed(2)}`,
-        year: `(${1974})`,
-      },
-      {
-        id: 1047,
-        title: 'Тёмный рыцарь',
-        imdb: `imdb: ${(9.00).toFixed(2)}`,
-        year: `(${2008})`,
-      },
-      {
-        id: 223,
-        title: 'Криминальное чтиво',
-        imdb: `imdb: ${(8.90).toFixed(2)}`,
-        year: `(${1994})`,
-      },
-    ];
-  }
-  return generatedArray;
-}
-const data = createDataArray(emulated); // [{…}, {…}, {…}, {…}, {…}]
-export default data;
+// TODO generation recieved JSON to Array, return new data for dataMixer()
+export default emulated;

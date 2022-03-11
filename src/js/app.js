@@ -1,6 +1,6 @@
-import data from './data';
+import emulated from './data';
 
 import DOMChange from './DOMChanges';
 
-const moviesTable = new DOMChange(data);
+const moviesTable = new DOMChange(emulated);
 moviesTable.show();

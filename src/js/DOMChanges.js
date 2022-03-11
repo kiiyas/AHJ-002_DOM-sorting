@@ -2,19 +2,38 @@ export default class DOMChange {
   constructor(receivedData) {
     this.data = receivedData;
     this.options = ['id', 'title', 'year', 'imdb'];
+    this.direction = true;
   }
 
-  dataMixer(arr) {
-    let direction = true;
+  // eslint-disable-next-line class-methods-use-this
+  checkDOM(container) {
+    if (!container) {
+      throw new Error('There is no table container in DOM');
+    }
+  }
 
-    let i = 4;
+  dataMixer() {
+    let i = 0;
     setInterval(() => {
       if (i >= this.options.length) {
         i = 0;
       }
       const name = this.options[i];
-      if (direction === true) {
-        arr.sort((a, b) => {
+      if (this.direction === false) {
+        this.data.sort((a, b) => {
+          if (a[name] < b[name]) {
+            return 1;
+          }
+          if (a[name] > b[name]) {
+            return -1;
+          }
+          return 0;
+        });
+        this.removeTable();
+        this.createTable(this.data, name);
+        i += 1;
+      } else {
+        this.data.sort((a, b) => {
           if (a[name] > b[name]) {
             return 1;
           }
@@ -24,65 +43,61 @@ export default class DOMChange {
           return 0;
         });
         this.removeTable();
-        this.createTable(arr);
-        direction = false;
+        this.createTable(this.data, name);
       }
-      // else
-      arr.sort((a, b) => {
-        if (a[name] < b[name]) {
-          return 1;
-        }
-        if (a[name] > b[name]) {
-          return -1;
-        }
-        return 0;
-      });
-      this.removeTable();
-      this.createTable(arr);
-      direction = true;
-      i += 1;
+
+      this.direction = this.direction !== true;
     }, 2000);
   }
 
-  createTable(moviesData) {
+  createTable(moviesData, hrName) {
     const field = document.getElementsByClassName('field');
+    this.checkDOM(field[0]);
+
     const table = document.createElement('table');
     table.classList.add('table');
     field[0].insertAdjacentElement('afterBegin', table);
 
     // create header
-    const trHead = document.createElement('tr');
-    table.insertAdjacentElement('afterBegin', trHead);
+    let tr = document.createElement('tr');
+    table.insertAdjacentElement('afterBegin', tr);
+
     for (let i = 0; i < this.options.length; i += 1) {
       const th = document.createElement('th');
-      th.textContent = this.options[i];
-      trHead.insertAdjacentElement('beforeEnd', th);
-    }
-
-    // create and fill rows
-    for (const obj of moviesData) {
-      const trBody = document.createElement('tr');
-      for (const i in this.options) {
-        if (this.options) {
-          const td = document.createElement('td');
-          td.textContent = obj[this.options[i]];
-          trBody.insertAdjacentElement('beforeEnd', td);
-        }
+      if (this.options[i] === hrName) {
+        th.textContent = this.options[i];
+        th.innerHTML += this.addArrow();
+      } else {
+        th.textContent = this.options[i];
       }
 
-      // adding created in table
-      table.insertAdjacentElement('beforeEnd', trBody);
+      tr.insertAdjacentElement('beforeEnd', th);
     }
+
+    moviesData.forEach((e) => {
+      tr = `<tr data-id="${e.id}" data-title="${e.title}" data-year="${e.year}" data-imdb="${e.imdb}">
+              <td>${e.id}</td>
+              <td>${e.title}</td>
+              <td>(${e.year})</td>
+              <td>imdb: ${e.imdb.toFixed(2)}</td>
+            </tr>`;
+      table.innerHTML += tr;
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
   removeTable() {
     const field = document.getElementsByClassName('field');
-    field[0].firstChild.remove();
+    field[0].innerHTML = null;
+  }
+
+  addArrow() {
+    const arrow = this.direction ? '&#8659' : '&#8657';
+    return arrow;
   }
 
   show() {
     // TODO generation recieved JSON to Array, return new data for dataMixer()
-    this.dataMixer(this.data);
+    this.dataMixer();
   }
 }
